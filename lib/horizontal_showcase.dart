@@ -2,18 +2,22 @@ library horizontal_showcase;
 import 'package:flutter/material.dart';
 
 class HorizontalShowcase {
-  Future<void> build({
+  static Future<void> build({
     required BuildContext context,
-    required Color backgroundColor,
     required List<Widget> menuItems,
-    double menuWidth = 230,
+    Color backgroundColor = const Color(0XFFFFFFFF),
+    double width = 230,
+    double height = 50,
     double xOffset = -150,
     double yOffset = -150,
     double? elevation,
-    Color? shadowColor,
+    Color? shadowColor = Colors.transparent,
     Clip clipBehaviour = Clip.none ,
     EdgeInsetsGeometry padding = const EdgeInsets.all(8.0),
     ShapeBorder shape = const RoundedRectangleBorder(),
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.spaceBetween,
+    Curve popupAnimation = Curves.decelerate,
+    Duration animationDuration = const Duration(milliseconds: 1000),
   }) {
     final RenderObject? overlay =
         Overlay.of(context).context.findRenderObject();
@@ -26,6 +30,7 @@ class HorizontalShowcase {
       shape: shape,
       color: backgroundColor,
       shadowColor: shadowColor,
+      surfaceTintColor: Colors.transparent,
       elevation: elevation,
       clipBehavior: clipBehaviour,
       position: RelativeRect.fromRect(
@@ -42,17 +47,19 @@ class HorizontalShowcase {
         Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width + 50,
             overlay.paintBounds.size.height),
       ),
+      popUpAnimationStyle: AnimationStyle(curve: popupAnimation,duration: animationDuration),
       items: [
         PopupMenuItem<int>(
           value: 1,
-          child: Center(
-            child: SizedBox(
-              width: menuWidth, // To change the width of the PopUp Menu make changes here
-              child: Padding(
-                padding: padding,
-                child: Row(
-                  children: menuItems,
-                ),
+          enabled: true,
+          child: SizedBox(
+            height: height,
+            width: width, // To change the width of the PopUp Menu make changes here
+            child: Padding(
+              padding: padding,
+              child: Row(
+                mainAxisAlignment: mainAxisAlignment,
+                children: menuItems,
               ),
             ),
           ),
